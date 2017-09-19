@@ -21,7 +21,7 @@ class ObjResourceSensor:
         try:
             json_data = json.loads(req.stream.read())
             json_input_found = True
-            print t.green('Json data from client its validated')
+            print(t.green('Json data from client its validated'))
         except:
             resp.status = falcon.HTTP_404
             resp.body = json.dumps({
@@ -60,7 +60,7 @@ class ObjResourceLightScan:
 
 class ObjResourceLight:
     def on_post(self, req, resp):
-        print t.blue('Do a request!')
+        print(t.blue('Do a request!'))
 
         json_input_found = False
 
@@ -68,7 +68,7 @@ class ObjResourceLight:
             json_data = json.loads(req.stream.read())
             json_input_found = True
 
-            print t.green('Json data from client its validated')
+            print(t.green('Json data from client its validated'))
         except:
             resp.status = falcon.HTTP_404
             resp.body = json.dumps({
@@ -76,7 +76,7 @@ class ObjResourceLight:
                 'message' : 'Your json input data is not validated.'
             })
 
-            print t.red('Invalidate json input data from client')
+            print(t.red('Invalidate json input data from client'))
 
         if(json_input_found == True):
             PhilipsHue = libs.philips.Hue(config['philips-hue']['ip'],config['philips-hue']['username'])
@@ -91,14 +91,14 @@ class ObjResourceLight:
                 if 'on' in json_data.keys():
                     if(json_data['on'] == 1):
                         PhilipsHue.lightOn(True)
-                        print t.blue('Light stauts:\n'+ json.dumps(PhilipsHue.light_status))
+                        print(t.blue('Light stauts:\n'+ json.dumps(PhilipsHue.light_status)))
 
                     elif(json_data['on'] == 0):
                         PhilipsHue.lightOn(False)
-                        print t.blue('Light stauts:\n'+ json.dumps(PhilipsHue.light_status))
+                        print(t.blue('Light stauts:\n'+ json.dumps(PhilipsHue.light_status)))
 
                     else:
-                        print t.red('Wrong value for params[on] : '+ str(json_data['on']))
+                        print(t.red('Wrong value for params[on] : '+ str(json_data['on'])))
 
                     resp.body = json.dumps(PhilipsHue.light_status)
 
@@ -107,21 +107,21 @@ class ObjResourceLight:
 
                     resp.body = json.dumps(PhilipsHue.light_status)
 
-                    print t.blue('Light name changed to: '+ json_data['name'])
+                    print(t.blue('Light name changed to: '+ json_data['name']))
             else:
                 if(PhilipsHue.bridge_online == False):
                     resp.body = {
                         'status' : '404',
                         'msg' : 'Philips Hue Bridge is offline'
                     }
-                    print t.yellow('Philips Hue Bridge is offline')
+                    print(t.yellow('Philips Hue Bridge is offline'))
 
                 else:
                     resp.body = {
                         'status' : '404',
                         'msg' : 'Philip Hue found no lights'
                     }
-                    print t.yellow('Philip Hue found no lights')
+                    print(t.yellow('Philip Hue found no lights'))
 
 
 api = falcon.API()
